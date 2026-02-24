@@ -19,7 +19,15 @@ export default async function handler(req, res) {
     });
 
   const data = await response.json();
-const reply = data?.content?.[0]?.text || "";
+const reply =
+(data?.content || [])
+    .filter((b) => b && b.type === "text" && typeof b.text === "string")
+    .map((b) => b.text)
+    .join("\n")
+    .trim();
+  if (!reply) {
+  return res.status(500).json({ error: "Empty reply from model" });
+}
 res.status(200).json({ reply });
 
   } catch (error) {
