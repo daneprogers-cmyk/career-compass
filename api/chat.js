@@ -19,6 +19,12 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+  const reply = (data?.content || [])
+  .filter((b) => b.type === "text")
+  .map((b) => b.text)
+  .join("\n")
+  .trim();
+
 
     // 🔥 SHOW REAL ERROR
     if (!response.ok) {
@@ -28,7 +34,8 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json(data);
+if (!reply) return res.status(500).json({ error: "Empty reply from model" });
+ return res.status(200).json({ reply });
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
