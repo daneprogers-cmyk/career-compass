@@ -790,7 +790,7 @@ async function callCleo() {
     }
 
     const data = await resp.json();
-    const reply = data?.content?.[0]?.text;
+const reply = data?.reply;
     if (!reply) throw new Error('Empty response from API');
 
     if (reply.includes('[READY_FOR_RESULTS]')) {
