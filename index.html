@@ -607,14 +607,16 @@ function showScreen(id) {
 }
 
 function goToSetup() {
-  showScreen('screen-chat');
+  showScreen('screen-intro');
   setStage(1);
+  runIntroTypewriter();
 }
 
 // ── API KEY + START ────────────────────────────────────
 function begin() {
-  showScreen('screen-chat');
+  showScreen('screen-intro');
   setStage(1);
+  runIntroTypewriter();
 }
 // ── INTRO TYPEWRITER ──────────────────────────────────
 function runIntroTypewriter() {
