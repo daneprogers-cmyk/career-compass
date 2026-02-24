@@ -18,19 +18,19 @@ export default async function handler(req, res) {
       })
     });
 
-  const data = await response.json();
-const reply =
-(data?.content || [])
-    .filter((b) => b && b.type === "text" && typeof b.text === "string")
-    .map((b) => b.text)
-    .join("\n")
-    .trim();
-  if (!reply) {
-  return res.status(500).json({ error: "Empty reply from model" });
-}
-res.status(200).json({ reply });
+    const data = await response.json();
 
-  } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
+    // 🔥 SHOW REAL ERROR
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: "Anthropic error",
+        details: data
+      });
+    }
+
+    return res.status(200).json(data);
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 }
