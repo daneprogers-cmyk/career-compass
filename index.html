@@ -607,24 +607,15 @@ function showScreen(id) {
 }
 
 function goToSetup() {
-  showScreen('screen-setup');
-  setStage(0);
+  showScreen('screen-chat');
+  setStage(1);
 }
 
 // ── API KEY + START ────────────────────────────────────
 function begin() {
-  const k = document.getElementById('key-inp').value.trim();
-  if (!k.startsWith('sk-ant-')) {
-    document.getElementById('err-box').style.display = 'block';
-    return;
-  }
-  document.getElementById('err-box').style.display = 'none';
-  apiKey = k;
-  showScreen('screen-intro');
+  showScreen('screen-chat');
   setStage(1);
-  runIntroTypewriter();
 }
-
 // ── INTRO TYPEWRITER ──────────────────────────────────
 function runIntroTypewriter() {
   const lines = [
