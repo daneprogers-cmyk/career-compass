@@ -748,7 +748,9 @@ async function callCleo() {
     'Accept': 'application/json',
   },
   body: JSON.stringify({
-    messages: clean
+    messages: clean,
+    system: SYSTEM,
+    max_tokens: 1000
   })
 });
     removeTyping(tid);
@@ -876,7 +878,8 @@ Generate 4 careers ranked by fit. Localize to the user's area if known. Make why
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         messages: [...cleanHistory, { role: 'user', content: prompt }],
-        isResults: true
+        system: SYSTEM,
+        max_tokens: 4096
       })
     });
 
