@@ -189,6 +189,30 @@ input[type="password"]:focus{border-color:var(--text)}
 #send-btn:disabled{opacity:.2;cursor:not-allowed;transform:none}
 #send-btn svg{width:14px;height:14px;fill:var(--bg)}
 
+/* ── GO TO RESULTS BUTTON ── */
+#btn-go-results{
+  display:none;
+  align-items:center;
+  gap:8px;
+  background:var(--text);
+  color:var(--bg);
+  border:none;
+  border-radius:8px;
+  padding:10px 18px;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  animation:fadeUp .4s ease both;
+  transition:all .2s;
+}
+#btn-go-results:hover{opacity:.8;transform:translateY(-1px)}
+#btn-go-results svg{width:13px;height:13px;fill:var(--bg);flex-shrink:0}
+
 /* ──────────────────────────────────────────
    LOADING SCREEN
 ────────────────────────────────────────── */
@@ -266,28 +290,36 @@ input[type="password"]:focus{border-color:var(--text)}
 .explore-panel.open{display:block}
 .explore-sub-title{font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px}
 .company-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:12px}
-.company-chip{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 11px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer;transition:all .2s}
-.company-chip:hover{background:var(--text);color:var(--bg)}
+.company-chip{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 11px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer;transition:border-color .2s;text-decoration:none;display:block}
+.company-chip:hover{border-color:var(--text)}
 .job-list{display:flex;flex-direction:column;gap:6px}
 .job-item{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px}
 .job-search-links{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.btn-job-search{display:flex;align-items:center;gap:7px;flex:1;min-width:120px;background:var(--bg);border:1px solid var(--border2);border-radius:4px;padding:10px 12px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text);cursor:pointer;transition:all .2s;text-decoration:none}
-.btn-job-search:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-job-search{display:flex;align-items:center;gap:7px;flex:1;min-width:120px;border-radius:5px;padding:10px 14px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:opacity .2s,transform .15s;text-decoration:none;border:none}
+.btn-job-search:hover{opacity:.85;transform:translateY(-1px)}
 .btn-job-search svg{width:13px;height:13px;flex-shrink:0}
+.btn-job-search.linkedin{background:#0A66C2;color:#fff}
+.btn-job-search.indeed{background:#2164F3;color:#fff}
+.btn-job-search.glassdoor{background:#0CAA41;color:#fff}
 .job-title-text{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
 .job-meta{font-size:11px;color:var(--muted2)}
 
-/* Feedback slide */
+/* Feedback slide — redesigned */
 .feedback-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
 .feedback-slide.active{opacity:1;pointer-events:auto}
-.feedback-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:32px 28px;max-width:460px;width:100%;text-align:center}
-.feedback-cleo{width:70px;height:70px;margin:0 auto 18px;animation:float 3s ease-in-out infinite}
+.feedback-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:36px 32px;max-width:480px;width:100%;text-align:center}
+.feedback-cleo{width:64px;height:64px;margin:0 auto 20px;animation:float 3s ease-in-out infinite}
 .feedback-cleo img{width:100%;height:100%;object-fit:contain;filter:none}
-.feedback-title{font-size:17px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px}
-.feedback-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:22px}
-.feedback-actions{display:flex;flex-direction:column;gap:8px}
-.btn-feedback{background:transparent;border:1px solid var(--border);border-radius:4px;padding:11px 16px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;color:var(--text);cursor:pointer;transition:all .2s;text-align:left}
-.btn-feedback:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.feedback-eyebrow{font-size:8px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px}
+.feedback-title{font-size:19px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px;line-height:1.2}
+.feedback-sub{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:26px;max-width:340px;margin-left:auto;margin-right:auto}
+.feedback-divider{width:32px;height:1px;background:var(--border2);margin:0 auto 24px}
+.feedback-actions{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.btn-feedback{background:transparent;border:1px solid var(--border);border-radius:5px;padding:12px 16px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;text-align:left;line-height:1.4}
+.btn-feedback:hover{border-color:var(--text);color:var(--text);background:var(--bg2)}
+.btn-feedback.primary{background:var(--text);color:var(--bg);border-color:var(--text);font-weight:700;text-align:center}
+.btn-feedback.primary:hover{opacity:.8}
+.feedback-footnote{font-size:10px;color:var(--muted2);letter-spacing:.3px}
 
 .slider-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:12px;flex-shrink:0}
 .nav-btn{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:7px 18px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);cursor:pointer;transition:all .2s}
@@ -345,6 +377,42 @@ input[type="password"]:focus{border-color:var(--text)}
 /* ── SAVE RESULTS ── */
 .btn-save-results{display:flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--border2);border-radius:4px;padding:6px 14px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);cursor:pointer;transition:all .2s}
 .btn-save-results:hover{border-color:var(--text);color:var(--text)}
+
+/* ── BACK NAV BUTTONS ── */
+#btn-back-to-results{display:none;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border2);border-radius:6px;padding:8px 14px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .2s}
+#btn-back-to-results:hover{border-color:var(--text);color:var(--text)}
+.btn-back-to-chat{background:transparent;border:1px solid var(--border2);border-radius:4px;padding:6px 14px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);cursor:pointer;transition:all .2s}
+.btn-back-to-chat:hover{border-color:var(--text);color:var(--text)}
+
+/* ── CLOSING REMARKS SCREEN ── */
+#screen-closing{flex-direction:column;align-items:center;justify-content:flex-start;background:var(--bg);padding:0;overflow-y:auto;animation:fadeUp .6s ease both}
+.closing-inner{display:flex;flex-direction:column;align-items:center;width:100%;min-height:100%}
+
+/* Buffer / thinking state — large centered Cleo */
+#closing-buffer{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;width:100%;min-height:calc(100vh - 60px);transition:opacity .25s ease}
+#closing-buffer.hidden{opacity:0;pointer-events:none;height:0;min-height:0;overflow:hidden;flex:0}
+.closing-buffer-cleo{width:140px;height:140px;animation:float 3.5s ease-in-out infinite;margin-bottom:18px;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease}
+.closing-buffer-cleo.shrink{transform:scale(0);opacity:0}
+.closing-buffer-cleo img{width:100%;height:100%;object-fit:contain}
+.closing-buffer-label{font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--muted2);transition:opacity .2s}
+.closing-buffer-cleo.shrink ~ .closing-buffer-label{opacity:0}
+
+/* Content state */
+#closing-content{display:flex;flex-direction:column;align-items:center;width:100%;opacity:0;transition:opacity .4s ease;padding:32px 0 48px}
+#closing-content.visible{opacity:1}
+.closing-cleo-section{display:flex;align-items:center;justify-content:center;padding-bottom:20px;flex-shrink:0}
+.closing-cleo-wrap{width:80px;height:80px;animation:float 4s ease-in-out infinite;transform:scale(0);transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.closing-cleo-wrap.grown{transform:scale(1)}
+.closing-cleo-wrap img{width:100%;height:100%;object-fit:contain}
+.closing-text-section{display:flex;flex-direction:column;align-items:center;padding:0 16px;max-width:900px;width:100%}
+.closing-typed{font-size:14px;color:var(--text);font-weight:400;text-align:left;width:100%;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.9}
+.closing-typed .cl-line{display:block;margin-bottom:12px}
+.closing-typed .cl-line.cl-bold{font-weight:700;font-size:16px;margin-bottom:16px}
+.closing-typed .cl-line.cl-quote{font-size:15px;font-weight:600;letter-spacing:-.2px;margin-top:4px;margin-bottom:0}
+.closing-cursor{display:inline-block;width:8px;height:14px;background:var(--text);margin-right:2px;vertical-align:middle;animation:cur-blink .65s step-end infinite}
+.btn-go-playbook{display:none;margin-top:32px;background:var(--text);color:var(--bg);border:none;border-radius:4px;padding:13px 36px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;cursor:pointer;transition:all .2s;animation:fadeUp .5s ease both;flex-shrink:0}
+.btn-go-playbook:hover{opacity:.8;transform:translateY(-1px)}
+@media(max-width:680px){.closing-text-section{padding:0 24px}}
 </style>
 </head>
 <body>
@@ -452,10 +520,42 @@ input[type="password"]:focus{border-color:var(--text)}
     </div>
     <div id="input-wrap">
       <div class="input-row">
+        <button id="btn-back-to-results" onclick="backToResults()">← Results</button>
         <textarea id="user-input" rows="1" placeholder="Talk to Cleo..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
         <button id="send-btn" onclick="sendMsg()">
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>
+        <button id="btn-go-results" onclick="goToResults()">
+          Go to Results
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     CLOSING REMARKS
+══════════════════════════════ -->
+<div id="screen-closing" class="screen">
+  <div class="closing-inner">
+    <!-- Buffer: large centered Cleo while fetching personalization -->
+    <div id="closing-buffer">
+      <div class="closing-buffer-cleo">
+        <img id="closing-buffer-cleo-img" src="" alt="Cleo">
+      </div>
+      <span class="closing-buffer-label">Reflecting...</span>
+    </div>
+    <!-- Content: shown after personalization is ready -->
+    <div id="closing-content">
+      <div class="closing-cleo-section">
+        <div class="closing-cleo-wrap">
+          <img id="closing-cleo-img" src="" alt="Cleo">
+        </div>
+      </div>
+      <div class="closing-text-section">
+        <p id="closing-typed" class="closing-typed"></p>
+        <button class="btn-go-playbook" id="btn-go-playbook" onclick="goToPlaybook()">Go to My Results →</button>
       </div>
     </div>
   </div>
@@ -484,6 +584,7 @@ input[type="password"]:focus{border-color:var(--text)}
   <div class="results-bar">
     <span class="results-bar-title">Your Playbook</span>
     <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn-back-to-chat" id="btn-results-to-chat" onclick="backToChat()" style="display:none">← Back to Chat</button>
       <button class="btn-save-results" onclick="saveResults()">↓ Save results</button>
       <button class="btn-restart" onclick="restart()">↺ Start over</button>
     </div>
@@ -730,6 +831,29 @@ async function sendMsg() {
   await callCleo();
 }
 
+// ── ANTHROPIC API HELPER ─────────────────────────────
+async function cleoFetch({ messages, system, max_tokens }) {
+  const response = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messages: messages,
+      system: system || '',
+      max_tokens: max_tokens || 1000
+    })
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    const err = new Error(data?.error?.message || data?.error || ('HTTP ' + response.status));
+    err.errorType = data?.error?.type || '';
+    err.status = response.status;
+    throw err;
+  }
+  const reply = data?.reply;
+  if (!reply) throw new Error('Empty reply from model');
+  return { reply, content: data.content };
+}
+
 // ── CORE API CALL ─────────────────────────────────────
 async function callCleo() {
   busy = true;
@@ -741,44 +865,40 @@ async function callCleo() {
   const clean = history.filter(m => m.role === 'user' || m.role === 'assistant');
 
   try {
- const resp = await fetch('/api/chat', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  },
-  body: JSON.stringify({
-    messages: clean,
-    system: SYSTEM,
-    max_tokens: 1000
-  })
-});
+    const data = await cleoFetch({
+      messages: clean,
+      system: SYSTEM,
+      max_tokens: 1000
+    });
     removeTyping(tid);
 
-    if (!resp.ok) {
-      const errData = await resp.json().catch(() => ({}));
-      const errMsg = errData?.error?.message || ('HTTP ' + resp.status);
-      console.error('API error:', resp.status, errMsg);
-      throw new Error(errMsg);
-    }
-
-    const data = await resp.json();
-const reply = data?.reply;
+    const reply = data?.reply;
     if (!reply) throw new Error('Empty response from API');
 
     if (reply.includes('[READY_FOR_RESULTS]')) {
-      completeProgress();
-      const clean = reply.replace('[READY_FOR_RESULTS]', '').trim();
-      if (clean) {
-        addMsg('cleo', clean);
-        history.push({ role: 'assistant', content: clean });
+      const cleaned = reply.replace('[READY_FOR_RESULTS]', '').trim();
+      // Guard: if Cleo still has a question in the message, it fired too early — keep chatting
+      if (cleaned.includes('?')) {
+        addMsg('cleo', cleaned);
+        history.push({ role: 'assistant', content: cleaned });
+        setCleo('happy');
+        setTimeout(() => setCleo('idle'), 2200);
+      } else {
+        completeProgress();
+        if (cleaned) {
+          addMsg('cleo', cleaned);
+          history.push({ role: 'assistant', content: cleaned });
+        }
+        setCleo('hype');
+        setTimeout(() => {
+          setCleo('idle');
+          const btn = document.getElementById('btn-go-results');
+          btn.style.display = 'flex';
+          document.getElementById('user-input').disabled = true;
+          document.getElementById('user-input').placeholder = "Chat complete — see your results!";
+          document.getElementById('send-btn').style.display = 'none';
+        }, 2000);
       }
-      setCleo('hype');
-      setTimeout(() => {
-        showScreen('screen-loading');
-        runLoadingSeq();
-        fetchResults();
-      }, 2500);
     } else {
       addMsg('cleo', reply);
       history.push({ role: 'assistant', content: reply });
@@ -791,15 +911,19 @@ const reply = data?.reply;
     console.error('Cleo error:', err.message);
 
     const m = err.message.toLowerCase();
+    const t = (err.errorType || '').toLowerCase();
     let friendlyMsg;
-    if (m.includes('auth') || m.includes('api_key') || m.includes('api key') || m.includes('invalid x-api-key')) {
-      friendlyMsg = "There's a connection issue. Please refresh and try again.";
-    } else if (m.includes('429') || m.includes('rate') || m.includes('overload')) {
-      friendlyMsg = "We're moving a bit fast — give it a second and try again.";
+
+    if (t === 'exceeded_limit' || m.includes('exceeded_limit') || m.includes('five_hour') || m.includes('org_level_disabled')) {
+      friendlyMsg = "My API quota's hit its limit for this window — this resets every 5 hours on the free tier. Give it a bit and try again, or check your Anthropic account if you're on a paid plan.";
+    } else if (m.includes('auth') || m.includes('api_key') || m.includes('invalid x-api-key')) {
+      friendlyMsg = "There's a connection issue — looks like an API key problem. Please refresh and try again.";
+    } else if (t === 'rate_limit_error' || m.includes('429') || m.includes('rate') || m.includes('overload')) {
+      friendlyMsg = "We're moving a bit fast — give it a few seconds and try again.";
     } else if (m.includes('credit') || m.includes('billing')) {
-      friendlyMsg = "Looks like there may be a billing issue with your API key — check your Anthropic account.";
+      friendlyMsg = "Looks like there may be a billing issue with your API key — worth checking your Anthropic account.";
     } else {
-      friendlyMsg = "Something went wrong. Try sending that again.";
+      friendlyMsg = "Something went wrong on my end. Try sending that again.";
     }
 
     addMsg('cleo', friendlyMsg);
@@ -813,6 +937,149 @@ const reply = data?.reply;
   busy = false;
   document.getElementById('send-btn').disabled = false;
   document.getElementById('user-input').focus();
+}
+
+// ── GO TO RESULTS ─────────────────────────────────────
+function goToResults() {
+  document.getElementById('btn-go-results').style.display = 'none';
+  setStage(4);
+  // Set Cleo images before showing screen
+  document.getElementById('closing-buffer-cleo-img').src = CLEO_IMG;
+  document.getElementById('closing-cleo-img').src = CLEO_IMG;
+  showScreen('screen-closing');
+  runClosingTypewriter();
+}
+
+// ── CLOSING TYPEWRITER ────────────────────────────────
+async function runClosingTypewriter() {
+  // Fetch name + personalized reflection simultaneously from Cleo
+  let userName = null;
+  let personalLine = "The drive and self-awareness you brought into this conversation are traits that genuinely set people apart — hold onto them.";
+
+  try {
+    const cleanHistory = history.filter(m => m.role === 'user' || m.role === 'assistant');
+
+    // Single call: ask for name + personal reflection as JSON
+    const data = await cleoFetch({
+      messages: [
+        ...cleanHistory,
+        { role: 'user', content: 'Return ONLY a JSON object with no markdown, no extra text:\n{"name": "the user\'s first name, or null if never given", "reflection": "2 sentences identifying 1-2 concrete skills, values, or qualities this user demonstrated in our conversation — things like analytical thinking, creativity, resilience, curiosity, work ethic, empathy, adaptability, etc. Be specific to what they actually shared. Then confirm these are genuinely desirable traits that employers need. Speak directly as Cleo. Do NOT say you know what they\'re built for. Be direct and grounded."}' }
+      ],
+      system: SYSTEM,
+      max_tokens: 180
+    });
+
+    if (data?.reply) {
+      try {
+        let raw = data.reply.trim().replace(/^```json\s*/i,'').replace(/```\s*$/,'');
+        const parsed = JSON.parse(raw);
+        if (parsed.name && parsed.name !== 'null') userName = parsed.name;
+        if (parsed.reflection) personalLine = parsed.reflection;
+      } catch(e) {
+        // fallback: try to extract name from history manually
+        userName = extractUserName();
+      }
+    }
+  } catch (e) {
+    console.log('Personalization fetch skipped:', e.message);
+    userName = extractUserName();
+  }
+
+  // Shrink buffer Cleo, then hide buffer, grow content Cleo, start typing
+  const bufferCleo = document.querySelector('.closing-buffer-cleo');
+  bufferCleo.classList.add('shrink');
+
+  setTimeout(() => {
+    const buffer = document.getElementById('closing-buffer');
+    const content = document.getElementById('closing-content');
+    buffer.classList.add('hidden');
+    content.classList.add('visible');
+    // Grow the small Cleo at top
+    setTimeout(() => {
+      document.querySelector('.closing-cleo-wrap').classList.add('grown');
+      setTimeout(() => startTyping(userName, personalLine), 200);
+    }, 50);
+  }, 350);
+}
+
+function startTyping(userName, personalLine) {
+  const greeting = userName ? `${userName},` : 'Hey.';
+  const lines = [
+    { text: greeting, cls: 'cl-bold' },
+    { text: "It was a pleasure meeting you. Thank you for running my program and taking the time to talk with me.", cls: '' },
+    { text: "I'm a robot. I process data, map patterns, and surface options you might not have considered. But I can't feel what you feel, and I'd never pretend to.", cls: '' },
+    { text: 'What I built for you is a starting point — not a verdict.', cls: '' },
+    { text: personalLine, cls: '' },
+    { text: "I'm here to support you and show you options. But ultimately, the decision is yours — and that's the way it should be.", cls: '' },
+    { text: 'Most limits are self-imposed. The moment you believe otherwise, you become infinite.', cls: 'cl-quote' },
+    { text: "Go see what's possible.", cls: 'cl-quote' },
+  ];
+
+  const el = document.getElementById('closing-typed');
+  el.innerHTML = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'closing-cursor';
+  el.appendChild(cursor);
+
+  let lineIndex = 0;
+  let charIndex = 0;
+  let currentSpan = null;
+  const CHAR_DELAY = 16;
+  const LINE_PAUSE = 380;
+
+  function typeLine() {
+    if (lineIndex >= lines.length) {
+      cursor.remove();
+      const btn = document.getElementById('btn-go-playbook');
+      btn.style.display = 'inline-block';
+      return;
+    }
+    const { text, cls } = lines[lineIndex];
+    currentSpan = document.createElement('span');
+    currentSpan.className = 'cl-line' + (cls ? ' ' + cls : '');
+    el.insertBefore(currentSpan, cursor);
+    charIndex = 0;
+    typeChar(text);
+  }
+
+  function typeChar(text) {
+    if (charIndex < text.length) {
+      currentSpan.textContent += text[charIndex];
+      charIndex++;
+      setTimeout(() => typeChar(text), CHAR_DELAY);
+    } else {
+      const br = document.createElement('br');
+      el.insertBefore(br, cursor);
+      lineIndex++;
+      setTimeout(typeLine, LINE_PAUSE);
+    }
+  }
+
+  typeLine();
+}
+
+// ── EXTRACT USER NAME ─────────────────────────────────
+function extractUserName() {
+  // Look through user messages for a name
+  const namePatterns = [
+    /(?:i'?m|my name(?:'s| is)?|call me|i go by)\s+([A-Z][a-z]+)/i,
+    /^([A-Z][a-z]+)[,!.]?\s/,
+  ];
+  for (const msg of history) {
+    if (msg.role !== 'user') continue;
+    for (const re of namePatterns) {
+      const m = msg.content.match(re);
+      if (m && m[1] && m[1].length < 20) return m[1];
+    }
+  }
+  return null;
+}
+
+// ── GO TO PLAYBOOK ────────────────────────────────────
+function goToPlaybook() {
+  showScreen('screen-loading');
+  runLoadingSeq();
+  fetchResults();
 }
 
 // ── LOADING SEQUENCE ──────────────────────────────────
@@ -873,19 +1140,12 @@ Generate 4 careers ranked by fit. Localize to the user's area if known. Make why
   const cleanHistory = history.filter(m => m.role === 'user' || m.role === 'assistant');
 
   try {
-    const resp = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messages: [...cleanHistory, { role: 'user', content: prompt }],
-        system: SYSTEM,
-        max_tokens: 4096
-      })
+    const data = await cleoFetch({
+      messages: [...cleanHistory, { role: 'user', content: prompt }],
+      system: SYSTEM,
+      max_tokens: 4096
     });
 
-    if (!resp.ok) throw new Error('Results API returned ' + resp.status);
-
-    const data = await resp.json();
     const raw = data?.reply || '';
     console.log('Raw results response:', raw.slice(0, 200));
 
@@ -938,13 +1198,17 @@ function renderResults(data) {
     const slide = document.createElement('div');
     slide.className = 'career-slide' + (i === 0 ? ' active' : '');
 
-    const companies = (c.companies || []).map(co => `<div class="company-chip">${co}</div>`).join('');
+    const companies = (c.companies || []).map(co => {
+      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(co + ' careers')}`;
+      return `<a class="company-chip" href="${searchUrl}" target="_blank" rel="noopener">${co} ↗</a>`;
+    }).join('');
     const jobs = (c.job_titles || []).map(j =>
       `<div class="job-item"><div class="job-title-text">${j.title}</div><div class="job-meta">${j.level} · ${j.salary}</div></div>`
     ).join('');
 
     // Build job search URLs using career title + location from results
-    const jobQuery = encodeURIComponent(c.title);
+    const cleanTitle = c.title.replace(/\s*\(.*?\)\s*/g, '').trim();
+    const jobQuery = encodeURIComponent(cleanTitle);
     const jobLocation = encodeURIComponent(resultsData.location || 'Seattle, WA');
     const linkedinUrl = `https://www.linkedin.com/jobs/search/?keywords=${jobQuery}&location=${jobLocation}`;
     const indeedUrl = `https://www.indeed.com/jobs?q=${jobQuery}&l=${jobLocation}`;
@@ -987,16 +1251,16 @@ function renderResults(data) {
           <div class="job-list">${jobs}</div>
           <div class="explore-sub-title" style="margin-top:14px">Search live openings</div>
           <div class="job-search-links">
-            <a class="btn-job-search" href="${linkedinUrl}" target="_blank" rel="noopener">
+            <a class="btn-job-search linkedin" href="${linkedinUrl}" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
               LinkedIn Jobs
             </a>
-            <a class="btn-job-search" href="${indeedUrl}" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 4a8 8 0 110 16A8 8 0 0112 4zm.5 3.5h-1v5.25l4.5 2.7.5-.82-4-2.38V7.5z"/></svg>
+            <a class="btn-job-search indeed" href="${indeedUrl}" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.499 2C4.46 2 2 4.46 2 7.5c0 2.48 1.64 4.57 3.9 5.26V21h3.2V12.76C11.36 12.07 13 9.98 13 7.5 13 4.46 10.54 2 7.5 2zM17 7h-2.5v2H17v9h2V9h2V7h-4z"/></svg>
               Indeed
             </a>
-            <a class="btn-job-search" href="${glassdoorUrl}" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.5 17H13v-4.5h-2V17H6.5V7H11v4.5h2V7h4.5v10z"/></svg>
+            <a class="btn-job-search glassdoor" href="${glassdoorUrl}" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.5 17.5h-4V13h-3v4.5h-4v-11h4V11h3V6.5h4v11z"/></svg>
               Glassdoor
             </a>
           </div>
@@ -1005,20 +1269,23 @@ function renderResults(data) {
     slider.appendChild(slide);
   });
 
-  // Feedback slide
+  // Feedback slide — redesigned
   const fb = document.createElement('div');
   fb.className = 'feedback-slide';
   fb.innerHTML = `
     <div class="feedback-card">
       <div class="feedback-cleo"><img src="${CLEO_IMG}" alt="Cleo"></div>
-      <h3 class="feedback-title">What do you think?</h3>
-      <p class="feedback-sub">These are your top paths based on everything you shared. Does something feel right — or off?</p>
+      <div class="feedback-eyebrow">Before you go</div>
+      <h3 class="feedback-title">How'd I do?</h3>
+      <p class="feedback-sub">These paths are based on everything you shared with me. If something feels off — or if there's more to you I missed — I want to know.</p>
+      <div class="feedback-divider"></div>
       <div class="feedback-actions">
         <button class="btn-feedback" onclick="startFeedback('refine')">Something feels off — let's adjust</button>
+        <button class="btn-feedback" onclick="startFeedback('missing')">There's something about me you missed</button>
         <button class="btn-feedback" onclick="startFeedback('explore')">I want to dig deeper into one of these</button>
-        <button class="btn-feedback" onclick="startFeedback('missing')">You might have missed something about me</button>
-        <button class="btn-feedback" onclick="startFeedback('good')">These look great — I'm good!</button>
       </div>
+      <button class="btn-feedback primary" onclick="startFeedback('good')" style="width:100%;margin-top:4px">These look great — I'm good ✓</button>
+      <p class="feedback-footnote" style="margin-top:16px">Want to keep talking? Any option above takes you back to chat.</p>
     </div>`;
   slider.appendChild(fb);
 
@@ -1067,17 +1334,45 @@ function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSliderUI();
 function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSliderUI(); } }
 
 function startFeedback(type) {
+  // 'good' — just go back to results, no new chat round needed
+  if (type === 'good') {
+    showScreen('screen-results');
+    return;
+  }
+
   const msgs = {
     refine:  "Something feels off about these results — can we revisit?",
     explore: "I want to dig deeper into one of these paths.",
     missing: "I think there's something about me you might have missed.",
-    good:    "These look great, thanks Cleo!"
   };
   const msg = msgs[type];
   history.push({ role: 'user', content: msg });
+
+  // Re-enable input for continued chat
+  const inp = document.getElementById('user-input');
+  inp.disabled = false;
+  inp.placeholder = 'Talk to Cleo...';
+  document.getElementById('send-btn').style.display = '';
+  document.getElementById('btn-go-results').style.display = 'none';
+
+  // Show "Back to Results" since we have results to return to
+  document.getElementById('btn-back-to-results').style.display = 'flex';
+  // Show "Back to Chat" in results bar
+  document.getElementById('btn-results-to-chat').style.display = '';
+
   showScreen('screen-chat');
   addMsg('user', msg);
   callCleo();
+}
+
+// ── NAVIGATION BETWEEN CHAT ↔ RESULTS ────────────────
+function backToResults() {
+  showScreen('screen-results');
+}
+
+function backToChat() {
+  showScreen('screen-chat');
+  document.getElementById('user-input').focus();
 }
 
 // ── MODE SELECTION ───────────────────────────────────
@@ -1141,7 +1436,8 @@ function saveResults() {
 `;
 
   careers.forEach(c => {
-    const jobQ = encodeURIComponent(c.title);
+    const cleanTitle = c.title.replace(/\s*\(.*?\)\s*/g, '').trim();
+    const jobQ = encodeURIComponent(cleanTitle);
     const loc = encodeURIComponent(resultsData.location || '');
     const liUrl = 'https://www.linkedin.com/jobs/search/?keywords=' + jobQ + '&location=' + loc;
     const indUrl = 'https://www.indeed.com/jobs?q=' + jobQ + '&l=' + loc;
@@ -1206,6 +1502,31 @@ function restart() {
   currentSlide = 0;
   document.getElementById('messages').innerHTML = '';
   document.getElementById('card-slider').innerHTML = '';
+  // Reset input area state
+  const goBtn = document.getElementById('btn-go-results');
+  const sendBtn = document.getElementById('send-btn');
+  const userInput = document.getElementById('user-input');
+  if (goBtn) goBtn.style.display = 'none';
+  if (sendBtn) sendBtn.style.display = '';
+  if (userInput) { userInput.disabled = false; userInput.placeholder = 'Talk to Cleo...'; }
+  // Reset nav buttons
+  const backToResultsBtn = document.getElementById('btn-back-to-results');
+  const backToChatBtn = document.getElementById('btn-results-to-chat');
+  if (backToResultsBtn) backToResultsBtn.style.display = 'none';
+  if (backToChatBtn) backToChatBtn.style.display = 'none';
+  // Reset closing screen
+  const closingTyped = document.getElementById('closing-typed');
+  const goPlaybook = document.getElementById('btn-go-playbook');
+  const closingBuffer = document.getElementById('closing-buffer');
+  const closingContent = document.getElementById('closing-content');
+  if (closingTyped) closingTyped.innerHTML = '';
+  if (goPlaybook) goPlaybook.style.display = 'none';
+  if (closingBuffer) closingBuffer.classList.remove('hidden');
+  if (closingContent) closingContent.classList.remove('visible');
+  const bufferCleo = document.querySelector('.closing-buffer-cleo');
+  const contentCleo = document.querySelector('.closing-cleo-wrap');
+  if (bufferCleo) bufferCleo.classList.remove('shrink');
+  if (contentCleo) contentCleo.classList.remove('grown');
   ['ls-0','ls-1','ls-2','ls-3'].forEach(id => {
     const el = document.getElementById(id);
     el.classList.remove('active', 'done');
