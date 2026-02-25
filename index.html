@@ -889,13 +889,29 @@ Generate 4 careers ranked by fit. Localize to the user's area if known. Make why
     const raw = data?.reply || '';
     console.log('Raw results response:', raw.slice(0, 200));
 
-    // Parse JSON — strip any accidental markdown fences
+    // Parse JSON — clean and extract
     let jsonStr = raw.trim();
+    // Strip markdown fences
+    jsonStr = jsonStr.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+    // Extract JSON object boundaries
     const jsonStart = jsonStr.indexOf('{');
     const jsonEnd = jsonStr.lastIndexOf('}');
-    if (jsonStart === -1 || jsonEnd === -1) throw new Error('No JSON found in response. Raw: ' + raw.slice(0,200));
+    if (jsonStart === -1 || jsonEnd === -1) throw new Error('No JSON object found in response.');
     jsonStr = jsonStr.slice(jsonStart, jsonEnd + 1);
-    resultsData = JSON.parse(jsonStr);
+    // Replace smart quotes and problematic unicode that breaks JSON.parse
+    jsonStr = jsonStr
+      .replace(/\u201c|\u201d/g, '\"')   // smart double quotes
+      .replace(/\u2018|\u2019/g, "\'")   // smart single quotes / apostrophes
+      .replace(/\u2013|\u2014/g, '-')     // en dash, em dash
+      .replace(/\u2026/g, '...')           // ellipsis
+      .replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, ''); // control chars
+    try {
+      resultsData = JSON.parse(jsonStr);
+    } catch (parseErr) {
+      console.error('JSON parse failed at:', parseErr.message);
+      console.error('Around error:', jsonStr.slice(Math.max(0, parseInt(parseErr.message.match(/\d+/)?.[0] || 0) - 50), parseInt(parseErr.message.match(/\d+/)?.[0] || 0) + 50));
+      throw new Error('Results were generated but contained formatting issues. Please try again.');
+    }
 
     // Wait for loading animation to finish, then show results
     setTimeout(() => {
