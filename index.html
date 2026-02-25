@@ -122,25 +122,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 /* ──────────────────────────────────────────
    SETUP / API KEY SCREEN
 ────────────────────────────────────────── */
-#screen-setup{
-  align-items:center;
-  justify-content:center;
-  padding:40px 24px;
-  animation:fadeUp .5s ease both;
-}
-.setup-wrap{width:100%;max-width:440px}
-.setup-eyebrow{font-size:9px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--muted2);margin-bottom:14px}
-.setup-title{font-size:clamp(32px,5vw,52px);font-weight:800;line-height:.93;letter-spacing:-1.5px;margin-bottom:16px}
-.setup-title em{font-style:normal;color:var(--muted);display:block;font-size:clamp(14px,2.5vw,20px);font-weight:400;letter-spacing:0px;margin-top:4px}
-.setup-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:28px}
-.setup-desc a{color:var(--text)}
-.field-label{display:block;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);margin-bottom:7px}
 input[type="password"]{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:12px 14px;color:var(--text);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;outline:none;transition:border-color .2s;margin-bottom:5px}
 input[type="password"]:focus{border-color:var(--text)}
-.field-note{font-size:11px;color:var(--muted2);margin-bottom:20px}
 .btn-primary{width:100%;background:var(--text);color:var(--bg);border:none;border-radius:4px;padding:13px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .btn-primary:hover{opacity:.8;transform:translateY(-1px)}
-.err-box{background:#f8f8f8;border:1px solid var(--border2);border-radius:4px;padding:10px 14px;font-size:12px;color:#666;margin-top:10px;display:none}
 
 /* ──────────────────────────────────────────
    CHAT SCREEN
@@ -408,20 +393,7 @@ input[type="password"]:focus{border-color:var(--text)}
 <!-- ══════════════════════════════
      SETUP / API KEY
 ══════════════════════════════ -->
-<div id="screen-setup" class="screen">
-  <div class="setup-wrap">
-    <div class="setup-eyebrow">Step 1 of 2</div>
-    <h2 class="setup-title">Connect<em>your API key to activate Cleo</em></h2>
-    <p class="setup-desc">
-      Get a free key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys → Create Key. It stays in your browser only and is never stored.
-    </p>
-    <label class="field-label" for="key-inp">Anthropic API Key</label>
-    <input type="password" id="key-inp" placeholder="sk-ant-..." autocomplete="off">
-    <p class="field-note">Starts with sk-ant-</p>
-    <button class="btn-primary" onclick="begin()">Start Talking to Cleo →</button>
-    <div class="err-box" id="err-box">That key doesn't look right — should start with sk-ant-</div>
-  </div>
-</div>
+
 
 <!-- ══════════════════════════════
      INTRO / CLEO REVEAL
@@ -533,7 +505,6 @@ input[type="password"]:focus{border-color:var(--text)}
 
 <script>
 // ── STATE ──────────────────────────────────────────────
-let apiKey = '';
 let history = [];   // always alternating user/assistant, starting with user
 let busy = false;
 let resultsData = null;
@@ -820,7 +791,7 @@ const reply = data?.reply;
     const m = err.message.toLowerCase();
     let friendlyMsg;
     if (m.includes('auth') || m.includes('api_key') || m.includes('api key') || m.includes('invalid x-api-key')) {
-      friendlyMsg = "There's an issue with your API key. Please refresh and try entering it again.";
+      friendlyMsg = "There's a connection issue. Please refresh and try again.";
     } else if (m.includes('429') || m.includes('rate') || m.includes('overload')) {
       friendlyMsg = "We're moving a bit fast — give it a second and try again.";
     } else if (m.includes('credit') || m.includes('billing')) {
@@ -900,26 +871,19 @@ Generate 4 careers ranked by fit. Localize to the user's area if known. Make why
   const cleanHistory = history.filter(m => m.role === 'user' || m.role === 'assistant');
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch('/api/chat', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 4096,
-        system: SYSTEM,
-        messages: [...cleanHistory, { role: 'user', content: prompt }]
+        messages: [...cleanHistory, { role: 'user', content: prompt }],
+        isResults: true
       })
     });
 
     if (!resp.ok) throw new Error('Results API returned ' + resp.status);
 
     const data = await resp.json();
-    const raw = data?.content?.[0]?.text || '';
+    const raw = data?.reply || '';
     console.log('Raw results response:', raw.slice(0, 200));
 
     // Parse JSON — strip any accidental markdown fences
