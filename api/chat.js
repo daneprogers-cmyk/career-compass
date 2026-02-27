@@ -1,11 +1,12 @@
-// Simple in-memory rate limiter
-// Limits each IP to 20 requests per hour
+// ── RATE LIMITER ─────────────────────────────────────
+// 50 requests per hour per IP — covers ~3 full sessions comfortably
 const rateLimitMap = new Map();
+
+const RATE_LIMIT_MAX = 50;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
 function isRateLimited(ip) {
   const now = Date.now();
-  const windowMs = 60 * 60 * 1000; // 1 hour
-  const maxRequests = 20; // max requests per hour per user
 
   if (!rateLimitMap.has(ip)) {
     rateLimitMap.set(ip, { count: 1, start: now });
@@ -14,49 +15,69 @@ function isRateLimited(ip) {
 
   const record = rateLimitMap.get(ip);
 
-  // Reset window if an hour has passed
-  if (now - record.start > windowMs) {
+  if (now - record.start > RATE_LIMIT_WINDOW_MS) {
     rateLimitMap.set(ip, { count: 1, start: now });
     return false;
   }
 
-  // Over the limit
-  if (record.count >= maxRequests) {
-    return true;
-  }
+  if (record.count >= RATE_LIMIT_MAX) return true;
 
-  // Increment count
   record.count++;
   return false;
 }
 
+// ── INPUT VALIDATION ──────────────────────────────────
+const MAX_INPUT_CHARS = 2000;
+const MAX_MESSAGES    = 40;
+const MAX_TOKENS_CAP  = 2500;
+
+function validateMessages(messages) {
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return 'Invalid messages format';
+  }
+  if (messages.length > MAX_MESSAGES) {
+    return 'Conversation history too long';
+  }
+  for (const msg of messages) {
+    if (!msg.role || !msg.content) return 'Malformed message object';
+    if (!['user', 'assistant'].includes(msg.role)) return 'Invalid message role';
+    if (typeof msg.content !== 'string') return 'Message content must be a string';
+    if (msg.content.length > MAX_INPUT_CHARS) return 'Message exceeds maximum length';
+  }
+  return null;
+}
+
+// ── HANDLER ───────────────────────────────────────────
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Get IP address
-  const ip = req.headers['x-forwarded-for']?.split(',')[0] || 
-             req.headers['x-real-ip'] || 
-             'unknown';
+  const ip =
+    req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
+    req.headers['x-real-ip'] ||
+    'unknown';
 
-  // Check rate limit
   if (isRateLimited(ip)) {
-    return res.status(429).json({ 
-      error: 'Too many requests. Please wait an hour before trying again.' 
+    return res.status(429).json({
+      error: 'rate_limit_reached',
+      message: "You've reached the request limit for this hour. Come back in a bit and we'll pick up where you left off."
     });
   }
 
   try {
     const { messages, system, max_tokens } = req.body;
 
-    // Validate inputs
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return res.status(400).json({ error: 'Invalid messages format' });
+    const validationError = validateMessages(messages);
+    if (validationError) {
+      return res.status(400).json({ error: validationError });
     }
 
-    // Cap max_tokens so no single request can be too expensive
-    const safeMaxTokens = Math.min(max_tokens || 1000, 4096);
+    if (system !== undefined && typeof system !== 'string') {
+      return res.status(400).json({ error: 'Invalid system prompt' });
+    }
+
+    const safeMaxTokens = Math.min(max_tokens || 1000, MAX_TOKENS_CAP);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -69,17 +90,24 @@ export default async function handler(req, res) {
         model: 'claude-sonnet-4-6',
         max_tokens: safeMaxTokens,
         system: system || '',
-        messages: messages
+        messages
       })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json({ 
-        error: 'Anthropic error', 
-        details: data 
-      });
+      const errorType = data?.error?.type || 'api_error';
+      const status = response.status;
+
+      if (status === 429 || errorType === 'rate_limit_error') {
+        return res.status(429).json({
+          error: 'rate_limit_reached',
+          message: "Cleo's hit a usage limit — this resets shortly. Try again in a few minutes."
+        });
+      }
+
+      return res.status(status).json({ error: 'api_error', type: errorType });
     }
 
     const reply = (data?.content || [])
@@ -93,6 +121,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply, content: data.content });
 
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: 'server_error' });
   }
 }
